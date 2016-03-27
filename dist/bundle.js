@@ -71,10 +71,15 @@
 	
 	console.log('APP!');
 	
-	// ReactDOM.render(
-	// 	<App json={feed}/>,
-	// 	document.getElementById('episodes')
-	// );
+	ReactDOM.render(React.createElement(
+		'div',
+		null,
+		React.createElement(
+			'h1',
+			null,
+			'HELLO WORLD'
+		)
+	), document.getElementById('app'));
 
 /***/ },
 /* 6 */

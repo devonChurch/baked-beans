@@ -28,8 +28,6 @@ module.exports = {
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss-loader!sass')
-                // loader: ExtractTextPlugin.extract('style', 'css?sourceMap!autoprefixer?browsers=last 2 versions!sass')
-                // loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass')
             },
             {
                 test: /\.js$/,
