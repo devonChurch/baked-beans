@@ -1,11 +1,12 @@
 'use strict';
 
-const feed = require('./feed');
+// const feed = require('./feed');
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Episodes = require('./episodes');
 
-ReactDOM.render(
-	<Episodes json={feed}/>,
-	document.getElementById('episodes')
-);
+console.log('APP!');
+
+// ReactDOM.render(
+// 	<App json={feed}/>,
+// 	document.getElementById('episodes')
+// );

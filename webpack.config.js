@@ -1,5 +1,6 @@
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var autoprefixer = require('autoprefixer');
 
 module.exports = {
     context: __dirname + '/src',
@@ -11,7 +12,7 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { from:  './index.html', to: 'index.html' }
+            { from: './index.html', to: 'index.html' }
         ]),
         new ExtractTextPlugin('style.css')
     ],
@@ -26,7 +27,9 @@ module.exports = {
         loaders: [
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap!autoprefixer?browsers=last 2 versions!sass')
+                loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss-loader!sass')
+                // loader: ExtractTextPlugin.extract('style', 'css?sourceMap!autoprefixer?browsers=last 2 versions!sass')
+                // loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass')
             },
             {
                 test: /\.js$/,
@@ -41,5 +44,8 @@ module.exports = {
     eslint: {
         failOnWarning: false,
         failOnError: false
+    },
+    postcss() {
+        return [autoprefixer];
     }
 };
