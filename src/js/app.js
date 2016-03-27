@@ -47,9 +47,7 @@ const reactions = {
 
 };
 
-const baseState = Immutable.List.of(0);
-
-const reducer = (state = baseState, action) => {
+const reducer = (state, action) => {
 
 	const reaction = reactions[action.type];
 
@@ -57,7 +55,11 @@ const reducer = (state = baseState, action) => {
 
 };
 
-let store = Redux.createStore(reducer);
+const baseState = Immutable.List.of(0);
+
+const devTools = window.devToolsExtension ? window.devToolsExtension() : undefined;
+
+let store = Redux.createStore(reducer, baseState, devTools);
 
 store.subscribe(() => render());
 
