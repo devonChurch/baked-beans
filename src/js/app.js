@@ -1,6 +1,7 @@
 'use strict';
 
 // const feed = require('./feed');
+const { Router, Route, IndexRoute, Redirect, Link, IndexLink, browserHistory } = require('react-router');
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Immutable = require('immutable');
@@ -12,6 +13,7 @@ const deepFreeze = require('deep-freeze');
 // console.log(expect);
 // console.log(deepFreeze);
 // console.log(Immutable);
+// console.log(Router, Route, IndexRoute, Redirect, Link, IndexLink, browserHistory);
 
 const reactions = {
 
@@ -57,6 +59,8 @@ const reducer = (state, action) => {
 
 const baseState = Immutable.List.of(0);
 
+// Activates The Redux dev tools Chrome extension.
+// https://github.com/zalmoxisus/redux-devtools-extension
 const devTools = window.devToolsExtension ? window.devToolsExtension() : undefined;
 
 let store = Redux.createStore(reducer, baseState, devTools);
@@ -104,12 +108,15 @@ const Counter = React.createClass({
 
 	render() {
 
-		const state = this.props.state;
+		const store = store.getState(); // this.props.state;
+
+		console.log(this.props.children);
 
 		return (
 			<ul>
+				<Link to="/banana">Banana</Link>
 				{
-					state.map((value, id) => {
+					store.map((value, id) => {
 
 						return (
 
@@ -127,20 +134,47 @@ const Counter = React.createClass({
 
 });
 
+const Banana = React.createClass({
+
+	render() {
+
+		return (
+
+			<div>
+				<h2>Banana | {this.props.route.foo}</h2>
+				<Link to="/">Home</Link>
+			</div>
+
+		);
+
+	}
+
+});
+
+// Needs to be declared outside of render().
+const routes = (
+	<Route path="/">
+		<IndexRoute component={Counter} />
+		<Route path="/banana">
+			<IndexRoute component={Banana} foo={'bar'}/>
+		</Route>
+	</Route>
+);
+
 const render = () => {
 
-	const state = store.getState();
-
-	console.log(state);
-
 	ReactDOM.render(
-		<div>
-			<Counter state={state}/>
-			<Instances />
-		</div>,
+		<Router history={browserHistory}>
+			{routes}
+		</Router>,
 		document.getElementById('app')
 	);
 
 };
 
 render();
+
+// <div>
+// 	<Counter state={state}/>
+// 	<Instances />
+// </div>
