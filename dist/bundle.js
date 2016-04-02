@@ -97,24 +97,24 @@
 	//      -- Episode
 	//      -- Episode
 	//      -- Episode
-	
+
 	// Home:
 	// - Header
 	// - Show list
 	// - Footer
-	
+
 	// Show:
 	// - Header
 	// - Episode list (AJAX additional content in)
 	// - Footer
-	
+
 	// Show:
 	// - Header
 	// - Player
 	// - Information
 	// - Footer
-	
-	ReactDOM.render(React.createElement(HomePage, { name: 'Sebastian' }), mountNode);
+
+	// ReactDOM.render(<HomePage name="Sebastian" />, mountNode);
 
 /***/ },
 /* 6 */

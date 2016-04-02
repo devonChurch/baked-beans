@@ -41,4 +41,4 @@ const EpisodePage = require('./episode-page');
 // - Information
 // - Footer
 
-ReactDOM.render(<HomePage name="Sebastian" />, mountNode);
+// ReactDOM.render(<HomePage name="Sebastian" />, mountNode);

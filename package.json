@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build:development": "webpack",
-    "build:production": "webpack -p"
+    "build:production": "webpack -p",
+    "server:development": "cd ./dist && node server.js"
   },
   "repository": {
     "type": "git",
