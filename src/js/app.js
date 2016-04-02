@@ -11,6 +11,8 @@ const HomePage = require('./home-page');
 const ShowPage = require('./show-page');
 const EpisodePage = require('./episode-page');
 
+console.log('app.js');
+
 // Home
 //   -- Show
 //      -- Episode

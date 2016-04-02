@@ -39,14 +39,14 @@ module.exports = [{
     devtool: 'source-map',
     entry: './entry.js',
     output: {
-        path: __dirname + '/dist',
-        filename: 'bundle.js'
+        path: __dirname + '/dist/main',
+        filename: 'client.js'
     },
     plugins: [
-        new CopyWebpackPlugin([
-            { from: './index.html', to: 'index.html' }
-            // { from: './node', to: 'node' }
-        ]),
+        // new CopyWebpackPlugin([
+        //     { from: './index.html', to: 'index.html' }
+        //     // { from: './node', to: 'node' }
+        // ]),
         new ExtractTextPlugin('style.css')
     ],
     module: {
@@ -67,6 +67,11 @@ module.exports = [{
         path: __dirname + '/dist',
         filename: 'server.js'
     },
+    plugins: [
+        new CopyWebpackPlugin([
+            { from: './scaffold.jade', to: 'scaffold.jade' }
+        ])
+    ],
     module: {
         preLoaders: [preLoaderEslint],
         loaders: [loaderJs, loaderJson]

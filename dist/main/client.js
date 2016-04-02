@@ -84,6 +84,8 @@
 	var ShowPage = __webpack_require__(234);
 	var EpisodePage = __webpack_require__(235);
 	
+	console.log('app.js');
+	
 	// Home
 	//   -- Show
 	//      -- Episode
@@ -30646,4 +30648,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle.js.map
+//# sourceMappingURL=client.js.map
