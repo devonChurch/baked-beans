@@ -44,61 +44,162 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(__dirname) {'use strict';
+	'use strict';
 	
-	// const jade = require('jade');
-	var path = __webpack_require__(1);
-	var express = __webpack_require__(2);
-	var app = express();
+	var express = __webpack_require__(1);
+	var port = 8000;
 	var React = __webpack_require__(81);
 	var ReactDOMServer = __webpack_require__(237);
-	var HomePage = __webpack_require__(238);
+	var fetchData = __webpack_require__(238);
+	var HomePage = __webpack_require__(240);
+	var ShowPage = __webpack_require__(241);
+	var EpisodePage = __webpack_require__(242);
 	
-	console.log('  ---------------------------  ');
-	console.log('  ' + __dirname);
-	console.log('  ---------------------------  ');
+	var app = express();
 	
-	app.set('view engine', 'jade');
-	app.set('views', __dirname);
-	// app.use(express.static(path.resolve(__dirname, './dist')));
-	app.use(express.static('main'));
-	app.get('/', function (req, res) {
-	    // res.send('Hello World!');
+	app.use(express.static('static'));
 	
-	    // ReactDOM.render(<HomePage name="Sebastian" />, mountNode);
+	app.get('/*', function (req, res) {
 	
-	    // res.render('layout', {
-	    //     reactHtml: React.renderToString(<App />)
-	    // });
+	    var json = fetchData(req.url);
 	
-	    // response.render('app', {
-	    //     app: ReactDOMServer.renderToString(<App />)
-	    // });
+	    console.log('** ------------- **');
+	    console.log(json);
+	    console.log('** ------------- **');
 	
-	    var title = 'this is a title';
-	    var desc = 'this is a description';
-	    var content = ReactDOMServer.renderToString(React.createElement(HomePage, { name: 'Sebastian' }));
+	    var views = {
+	        '/': function _() {
+	            return ReactDOMServer.renderToString(React.createElement(HomePage, { json: json }));
+	        },
+	        '/fruit': function fruit() {
+	            return ReactDOMServer.renderToString(React.createElement(ShowPage, { json: json }));
+	        },
+	        '/fruit/banana': function fruitBanana() {
+	            return ReactDOMServer.renderToString(React.createElement(EpisodePage, { json: json }));
+	        }
+	    };
 	
-	    var html = '<!DOCTYPE html>\n        <html>\n            <head>\n                <meta charset="utf-8">\n                <meta http-equiv="x-ua-compatible" content="ie=edge">\n                <title>' + title + '</title>\n                <meta name="viewport" content="width=device-width, initial-scale=1">\n                <link rel="stylesheet" href="/style.css">\n            </head>\n            <body>\n                <div id="app" class="app">' + content + '</div>\n\n                <script src="/client.js"></script>\n            </body>\n        </html>';
+	    var error = '<ul>\n            <li>There</li>\n            <li>Has</li>\n            <li>Been</li>\n            <li>An</li>\n            <li>Error</li>\n        </ul>';
 	
-	    // res.render('./scaffold.jade', {title, desc, content});
+	    var title = null; // = 'this is a title';
+	    var desc = null; // = 'this is a description';
+	
+	    var content = views[req.url] ? views[req.url]() : error;
+	
+	    var html = '<!DOCTYPE html>\n        <html>\n            <head>\n                <meta charset="utf-8">\n                <meta http-equiv="x-ua-compatible" content="ie=edge">\n                <title>' + (title || 'This is a title') + '</title>\n                <meta name="description" content="' + (desc || 'This is a description') + '">\n                <meta name="viewport" content="width=device-width, initial-scale=1">\n                <link rel="apple-touch-icon" href="apple-touch-icon.png">\n                <link rel="stylesheet" href="/style.css">\n            </head>\n            <body>\n                <div id="app" class="app">' + content + '</div>\n                <script src="/client.js"></script>\n            </body>\n        </html>';
 	
 	    res.send(html);
 	});
 	
-	app.listen(8000, function () {
-	    return console.log('listening on port 8000!');
+	app.listen(port, function () {
+	    return console.log('listening on port ' + port + '!');
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, "/"))
+	
+	// const jade = require('jade');
+	// const path = require('path');
+	// const ReactEngine = require('react-engine');
+	// const docType = '<!DOCTYPE html>';
+
+	// console.log('  ---------------------------  ');
+	// console.log('  ' + __dirname);
+	// console.log('  ---------------------------  ');
+
+	// var engine = ReactEngine.server.create({
+	//   /*
+	//     see the complete server options spec here:
+	//     https://github.com/paypal/react-engine#server-options-spec
+	//   */
+	// });
+
+	// app.engine('.jsx', engine);
+	// app.set('view engine', 'jsx');
+	// app.set('view engine', 'jade');
+	// app.set('views', __dirname + '/views');
+	// app.set('view', require('react-engine/lib/expressView'));
+	// app.use(express.static(path.resolve(__dirname, './dist')));
+
+	// path = '/foo/bar';
+	// let html;
+	// if (req.url === '/foo/bar') html =
+
+	// res.send('Hello World!');
+
+	// ReactDOM.render(<HomePage name="Sebastian" />, mountNode);
+
+	// res.render('layout', {
+	//     reactHtml: React.renderToString(<App />)
+	// });
+
+	// response.render('app', {
+	//     app: ReactDOMServer.renderToString(<App />)
+	// });
+
+	// console.log('  ---------------------------  ');
+	// console.log('  ---------------------------  ');
+	// console.log('  ---------------------------  ');
+	// console.log(req.url);
+	// console.log('  ---------------------------  ');
+	// console.log('  ---------------------------  ');
+	// console.log('  ---------------------------  ');
+	// console.log(res);
+
+	// const content = ReactDOMServer.renderToString(<HomePage name="Sebastian" />);
+
+	// const html = ReactDOMServer.renderToString(
+	//     <html>
+	//         <head>
+	//             <meta charset="utf-8" />
+	//             <meta http-equiv="x-ua-compatible" content="ie=edge" />
+	//             <title>{title}</title>
+	//             <meta name="viewport" content="width=device-width, initial-scale=1" />
+	//             <link rel="stylesheet" href="/style.css" />
+	//         </head>
+	//         <body>
+	//             <div id="app" className="app">
+	//                 <HomePage name="Sebastian" />
+	//             </div>
+	//             <script src="/client.js"></script>
+	//         </body>
+	//     </html>
+	// );
+
+	// const routes = (
+	// 	<Route path="/">
+	// 		<IndexRoute component={Counter} />
+	// 		<Route path="/banana">
+	// 			<IndexRoute component={Banana} foo={'bar'}/>
+	// 		</Route>
+	// 	</Route>
+	// );
+	//
+	// const render = () => {
+	//
+	// 	ReactDOM.render(
+	// 		<Router history={browserHistory}>
+	// 			{routes}
+	// 		</Router>,
+	// 		document.getElementById('app')
+	// 	);
+	//
+	// };
+
+	// const html = ReactDOMServer.renderToString(
+	//     <Router history={browserHistory}>
+	//         <Route path="/">
+	//             <IndexRoute component={Counter} />
+	//             <Route path="/banana">
+	//                 <IndexRoute component={Banana} foo={'bar'}/>
+	//             </Route>
+	//         </Route>
+	//     </Router>
+	// );
+
+	// res.render('./scaffold.jade', {title, desc, content});
+
+	// res.send(`${docType}${html}`);
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	module.exports = require("path");
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -111,11 +212,11 @@
 	
 	'use strict';
 	
-	module.exports = __webpack_require__(3);
+	module.exports = __webpack_require__(2);
 
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -132,11 +233,11 @@
 	 * Module dependencies.
 	 */
 	
-	var EventEmitter = __webpack_require__(4).EventEmitter;
-	var mixin = __webpack_require__(5);
-	var proto = __webpack_require__(6);
-	var Route = __webpack_require__(21);
-	var Router = __webpack_require__(20);
+	var EventEmitter = __webpack_require__(3).EventEmitter;
+	var mixin = __webpack_require__(4);
+	var proto = __webpack_require__(5);
+	var Route = __webpack_require__(20);
+	var Router = __webpack_require__(19);
 	var req = __webpack_require__(64);
 	var res = __webpack_require__(76);
 	
@@ -224,13 +325,13 @@
 
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports) {
 
 	module.exports = require("events");
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	/*!
@@ -296,7 +397,7 @@
 
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -314,21 +415,21 @@
 	 * @private
 	 */
 	
-	var finalhandler = __webpack_require__(7);
-	var Router = __webpack_require__(20);
-	var methods = __webpack_require__(25);
+	var finalhandler = __webpack_require__(6);
+	var Router = __webpack_require__(19);
+	var methods = __webpack_require__(24);
 	var middleware = __webpack_require__(35);
 	var query = __webpack_require__(36);
-	var debug = __webpack_require__(8)('express:application');
+	var debug = __webpack_require__(7)('express:application');
 	var View = __webpack_require__(41);
-	var http = __webpack_require__(16);
+	var http = __webpack_require__(15);
 	var compileETag = __webpack_require__(42).compileETag;
 	var compileQueryParser = __webpack_require__(42).compileQueryParser;
 	var compileTrust = __webpack_require__(42).compileTrust;
-	var deprecate = __webpack_require__(27)('express');
-	var flatten = __webpack_require__(22);
-	var merge = __webpack_require__(26);
-	var resolve = __webpack_require__(1).resolve;
+	var deprecate = __webpack_require__(26)('express');
+	var flatten = __webpack_require__(21);
+	var merge = __webpack_require__(25);
+	var resolve = __webpack_require__(32).resolve;
 	var slice = Array.prototype.slice;
 	
 	/**
@@ -945,7 +1046,7 @@
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -961,11 +1062,11 @@
 	 * @private
 	 */
 	
-	var debug = __webpack_require__(8)('finalhandler')
-	var escapeHtml = __webpack_require__(15)
-	var http = __webpack_require__(16)
-	var onFinished = __webpack_require__(17)
-	var unpipe = __webpack_require__(19)
+	var debug = __webpack_require__(7)('finalhandler')
+	var escapeHtml = __webpack_require__(14)
+	var http = __webpack_require__(15)
+	var onFinished = __webpack_require__(16)
+	var unpipe = __webpack_require__(18)
 	
 	/**
 	 * Module variables.
@@ -1102,7 +1203,7 @@
 
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -1110,8 +1211,8 @@
 	 * Module dependencies.
 	 */
 	
-	var tty = __webpack_require__(9);
-	var util = __webpack_require__(10);
+	var tty = __webpack_require__(8);
+	var util = __webpack_require__(9);
 	
 	/**
 	 * This is the Node.js implementation of `debug()`.
@@ -1119,7 +1220,7 @@
 	 * Expose `debug()` as the module.
 	 */
 	
-	exports = module.exports = __webpack_require__(11);
+	exports = module.exports = __webpack_require__(10);
 	exports.log = log;
 	exports.formatArgs = formatArgs;
 	exports.save = save;
@@ -1267,14 +1368,14 @@
 	      break;
 	
 	    case 'FILE':
-	      var fs = __webpack_require__(13);
+	      var fs = __webpack_require__(12);
 	      stream = new fs.SyncWriteStream(fd, { autoClose: false });
 	      stream._type = 'fs';
 	      break;
 	
 	    case 'PIPE':
 	    case 'TCP':
-	      var net = __webpack_require__(14);
+	      var net = __webpack_require__(13);
 	      stream = new net.Socket({
 	        fd: fd,
 	        readable: false,
@@ -1317,19 +1418,19 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	module.exports = require("tty");
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = require("util");
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -1345,7 +1446,7 @@
 	exports.disable = disable;
 	exports.enable = enable;
 	exports.enabled = enabled;
-	exports.humanize = __webpack_require__(12);
+	exports.humanize = __webpack_require__(11);
 	
 	/**
 	 * The currently active debug mode names, and names to skip.
@@ -1532,7 +1633,7 @@
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports) {
 
 	/**
@@ -1663,19 +1764,19 @@
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	module.exports = require("fs");
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
 	module.exports = require("net");
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports) {
 
 	/*!
@@ -1759,13 +1860,13 @@
 
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = require("http");
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -1790,7 +1891,7 @@
 	 * @private
 	 */
 	
-	var first = __webpack_require__(18)
+	var first = __webpack_require__(17)
 	
 	/**
 	 * Variables.
@@ -1967,7 +2068,7 @@
 
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports) {
 
 	/*!
@@ -2068,7 +2169,7 @@
 
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports) {
 
 	/*!
@@ -2143,7 +2244,7 @@
 
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -2161,13 +2262,13 @@
 	 * @private
 	 */
 	
-	var Route = __webpack_require__(21);
-	var Layer = __webpack_require__(23);
-	var methods = __webpack_require__(25);
-	var mixin = __webpack_require__(26);
-	var debug = __webpack_require__(8)('express:router');
-	var deprecate = __webpack_require__(27)('express');
-	var flatten = __webpack_require__(22);
+	var Route = __webpack_require__(20);
+	var Layer = __webpack_require__(22);
+	var methods = __webpack_require__(24);
+	var mixin = __webpack_require__(25);
+	var debug = __webpack_require__(7)('express:router');
+	var deprecate = __webpack_require__(26)('express');
+	var flatten = __webpack_require__(21);
 	var parseUrl = __webpack_require__(33);
 	
 	/**
@@ -2794,7 +2895,7 @@
 
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -2812,10 +2913,10 @@
 	 * @private
 	 */
 	
-	var debug = __webpack_require__(8)('express:router:route');
-	var flatten = __webpack_require__(22);
-	var Layer = __webpack_require__(23);
-	var methods = __webpack_require__(25);
+	var debug = __webpack_require__(7)('express:router:route');
+	var flatten = __webpack_require__(21);
+	var Layer = __webpack_require__(22);
+	var methods = __webpack_require__(24);
 	
 	/**
 	 * Module variables.
@@ -3010,7 +3111,7 @@
 
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -3080,7 +3181,7 @@
 
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3098,8 +3199,8 @@
 	 * @private
 	 */
 	
-	var pathRegexp = __webpack_require__(24);
-	var debug = __webpack_require__(8)('express:router:layer');
+	var pathRegexp = __webpack_require__(23);
+	var debug = __webpack_require__(7)('express:router:layer');
 	
 	/**
 	 * Module variables.
@@ -3262,7 +3363,7 @@
 
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports) {
 
 	/**
@@ -3397,7 +3498,7 @@
 
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3414,7 +3515,7 @@
 	 * @private
 	 */
 	
-	var http = __webpack_require__(16);
+	var http = __webpack_require__(15);
 	
 	/**
 	 * Module exports.
@@ -3472,7 +3573,7 @@
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports) {
 
 	/**
@@ -3501,7 +3602,7 @@
 
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -3514,9 +3615,9 @@
 	 * Module dependencies.
 	 */
 	
-	var callSiteToString = __webpack_require__(28).callSiteToString
-	var eventListenerCount = __webpack_require__(28).eventListenerCount
-	var relative = __webpack_require__(1).relative
+	var callSiteToString = __webpack_require__(27).callSiteToString
+	var eventListenerCount = __webpack_require__(27).eventListenerCount
+	var relative = __webpack_require__(32).relative
 	
 	/**
 	 * Module exports.
@@ -4028,7 +4129,7 @@
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -4044,8 +4145,8 @@
 	 * @private
 	 */
 	
-	var Buffer = __webpack_require__(29)
-	var EventEmitter = __webpack_require__(4).EventEmitter
+	var Buffer = __webpack_require__(28)
+	var EventEmitter = __webpack_require__(3).EventEmitter
 	
 	/**
 	 * Module exports.
@@ -4053,7 +4154,7 @@
 	 */
 	
 	lazyProperty(module.exports, 'bufferConcat', function bufferConcat() {
-	  return Buffer.concat || __webpack_require__(30)
+	  return Buffer.concat || __webpack_require__(29)
 	})
 	
 	lazyProperty(module.exports, 'callSiteToString', function callSiteToString() {
@@ -4077,11 +4178,11 @@
 	  Error.prepareStackTrace = prep
 	  Error.stackTraceLimit = limit
 	
-	  return stack[0].toString ? toString : __webpack_require__(31)
+	  return stack[0].toString ? toString : __webpack_require__(30)
 	})
 	
 	lazyProperty(module.exports, 'eventListenerCount', function eventListenerCount() {
-	  return EventEmitter.listenerCount || __webpack_require__(32)
+	  return EventEmitter.listenerCount || __webpack_require__(31)
 	})
 	
 	/**
@@ -4118,13 +4219,13 @@
 
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports) {
 
 	module.exports = require("buffer");
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports) {
 
 	/*!
@@ -4165,7 +4266,7 @@
 
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports) {
 
 	/*!
@@ -4274,7 +4375,7 @@
 
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports) {
 
 	/*!
@@ -4300,6 +4401,12 @@
 	  return emitter.listeners(type).length
 	}
 
+
+/***/ },
+/* 32 */
+/***/ function(module, exports) {
+
+	module.exports = require("path");
 
 /***/ },
 /* 33 */
@@ -5105,9 +5212,9 @@
 	 * @private
 	 */
 	
-	var debug = __webpack_require__(8)('express:view');
-	var path = __webpack_require__(1);
-	var fs = __webpack_require__(13);
+	var debug = __webpack_require__(7)('express:view');
+	var path = __webpack_require__(32);
+	var fs = __webpack_require__(12);
 	var utils = __webpack_require__(42);
 	
 	/**
@@ -5285,10 +5392,10 @@
 	
 	var contentDisposition = __webpack_require__(43);
 	var contentType = __webpack_require__(44);
-	var deprecate = __webpack_require__(27)('express');
-	var flatten = __webpack_require__(22);
+	var deprecate = __webpack_require__(26)('express');
+	var flatten = __webpack_require__(21);
 	var mime = __webpack_require__(45).mime;
-	var basename = __webpack_require__(1).basename;
+	var basename = __webpack_require__(32).basename;
 	var etag = __webpack_require__(56);
 	var proxyaddr = __webpack_require__(58);
 	var qs = __webpack_require__(37);
@@ -5594,7 +5701,7 @@
 	 * Module dependencies.
 	 */
 	
-	var basename = __webpack_require__(1).basename
+	var basename = __webpack_require__(32).basename
 	
 	/**
 	 * RegExp to match non attr-char, *after* encodeURIComponent (i.e. not including "%")
@@ -6261,22 +6368,22 @@
 	 */
 	
 	var createError = __webpack_require__(46)
-	var debug = __webpack_require__(8)('send')
-	var deprecate = __webpack_require__(27)('send')
+	var debug = __webpack_require__(7)('send')
+	var deprecate = __webpack_require__(26)('send')
 	var destroy = __webpack_require__(50)
-	var escapeHtml = __webpack_require__(15)
+	var escapeHtml = __webpack_require__(14)
 	  , parseRange = __webpack_require__(52)
 	  , Stream = __webpack_require__(51)
 	  , mime = __webpack_require__(53)
 	  , fresh = __webpack_require__(55)
-	  , path = __webpack_require__(1)
-	  , fs = __webpack_require__(13)
+	  , path = __webpack_require__(32)
+	  , fs = __webpack_require__(12)
 	  , normalize = path.normalize
 	  , join = path.join
 	var etag = __webpack_require__(56)
-	var EventEmitter = __webpack_require__(4).EventEmitter;
-	var ms = __webpack_require__(12);
-	var onFinished = __webpack_require__(17)
+	var EventEmitter = __webpack_require__(3).EventEmitter;
+	var ms = __webpack_require__(11);
+	var onFinished = __webpack_require__(16)
 	var statuses = __webpack_require__(47)
 	
 	/**
@@ -7333,7 +7440,7 @@
 /* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(10).inherits
+	module.exports = __webpack_require__(9).inherits
 
 
 /***/ },
@@ -7353,7 +7460,7 @@
 	 * @private
 	 */
 	
-	var ReadStream = __webpack_require__(13).ReadStream
+	var ReadStream = __webpack_require__(12).ReadStream
 	var Stream = __webpack_require__(51)
 	
 	/**
@@ -7496,8 +7603,8 @@
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var path = __webpack_require__(1);
-	var fs = __webpack_require__(13);
+	var path = __webpack_require__(32);
+	var fs = __webpack_require__(12);
 	
 	function Mime() {
 	  // Map of extension -> mime type
@@ -10285,7 +10392,7 @@
 	 */
 	
 	var crypto = __webpack_require__(57)
-	var Stats = __webpack_require__(13).Stats
+	var Stats = __webpack_require__(12).Stats
 	
 	/**
 	 * Module variables.
@@ -11299,10 +11406,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./application": 6,
-		"./application.js": 6,
-		"./express": 3,
-		"./express.js": 3,
+		"./application": 5,
+		"./application.js": 5,
+		"./express": 2,
+		"./express.js": 2,
 		"./middleware/init": 35,
 		"./middleware/init.js": 35,
 		"./middleware/query": 36,
@@ -11311,12 +11418,12 @@
 		"./request.js": 64,
 		"./response": 76,
 		"./response.js": 76,
-		"./router/index": 20,
-		"./router/index.js": 20,
-		"./router/layer": 23,
-		"./router/layer.js": 23,
-		"./router/route": 21,
-		"./router/route.js": 21,
+		"./router/index": 19,
+		"./router/index.js": 19,
+		"./router/layer": 22,
+		"./router/layer.js": 22,
+		"./router/route": 20,
+		"./router/route.js": 20,
 		"./utils": 42,
 		"./utils.js": 42,
 		"./view": 41,
@@ -11356,10 +11463,10 @@
 	 */
 	
 	var accepts = __webpack_require__(65);
-	var deprecate = __webpack_require__(27)('express');
-	var isIP = __webpack_require__(14).isIP;
+	var deprecate = __webpack_require__(26)('express');
+	var isIP = __webpack_require__(13).isIP;
 	var typeis = __webpack_require__(74);
-	var http = __webpack_require__(16);
+	var http = __webpack_require__(15);
 	var fresh = __webpack_require__(55);
 	var parseRange = __webpack_require__(52);
 	var parse = __webpack_require__(33);
@@ -12690,7 +12797,7 @@
 	 */
 	
 	var db = __webpack_require__(72)
-	var extname = __webpack_require__(1).extname
+	var extname = __webpack_require__(32).extname
 	
 	/**
 	 * Module variables.
@@ -21908,13 +22015,13 @@
 	 */
 	
 	var contentDisposition = __webpack_require__(43);
-	var deprecate = __webpack_require__(27)('express');
-	var escapeHtml = __webpack_require__(15);
-	var http = __webpack_require__(16);
+	var deprecate = __webpack_require__(26)('express');
+	var escapeHtml = __webpack_require__(14);
+	var http = __webpack_require__(15);
 	var isAbsolute = __webpack_require__(42).isAbsolute;
-	var onFinished = __webpack_require__(17);
-	var path = __webpack_require__(1);
-	var merge = __webpack_require__(26);
+	var onFinished = __webpack_require__(16);
+	var path = __webpack_require__(32);
+	var merge = __webpack_require__(25);
 	var sign = __webpack_require__(77).sign;
 	var normalizeType = __webpack_require__(42).normalizeType;
 	var normalizeTypes = __webpack_require__(42).normalizeTypes;
@@ -23309,9 +23416,9 @@
 	 * @private
 	 */
 	
-	var escapeHtml = __webpack_require__(15)
+	var escapeHtml = __webpack_require__(14)
 	var parseUrl = __webpack_require__(33)
-	var resolve = __webpack_require__(1).resolve
+	var resolve = __webpack_require__(32).resolve
 	var send = __webpack_require__(45)
 	var url = __webpack_require__(34)
 	
@@ -42930,6 +43037,163 @@
 
 	'use strict';
 	
+	var feed = __webpack_require__(239);
+	
+	var distillFeed = function distillFeed(breadCrumb, data) {
+	
+	    var distilled = undefined;
+	    var i = 0;
+	
+	    var query = function query(breadCrumb, data, i) {
+	
+	        console.log(breadCrumb, i, breadCrumb[i]);
+	
+	        if (i >= breadCrumb.length || !data.children) {
+	            console.log('i >== breadCrumb.length || !data.children');
+	            return;
+	        }
+	
+	        var ref = breadCrumb[i];
+	        var match = undefined;
+	
+	        data.children.map(function (page) {
+	
+	            console.log('testing', page.directory, '');
+	
+	            if (page.directory === breadCrumb[i]) {
+	                console.log('*** page match', page.directory, '');
+	                match = page;
+	            }
+	        });
+	
+	        i += 1;
+	
+	        distilled = match;
+	        // console.log(distilled);
+	
+	        query(breadCrumb, match, i);
+	    };
+	
+	    query(breadCrumb, data, i);
+	
+	    return distilled;
+	};
+	
+	var fetch = function fetch(path) {
+	
+	    // const path = '/fruit';
+	
+	    console.log('** ------------- **');
+	    console.log(path);
+	    console.log('** ------------- **');
+	
+	    if (path !== '/') {
+	
+	        console.log('NOT homepage');
+	
+	        var breadCrumb = path.slice(1).split('/');
+	
+	        // let json = distillFeed(breadCrumb, feed);
+	
+	        // console.log('  ** ------------ **');
+	        // console.log(json);
+	        // console.log(json.directory);
+	
+	        return distillFeed(breadCrumb, feed);
+	    } else {
+	
+	        console.log('IS homepage');
+	
+	        return feed;
+	    }
+	};
+	
+	module.exports = fetch;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"directory": "/",
+		"title": "Home page title",
+		"desc": "Home page description",
+		"children": [
+			{
+				"directory": "fruit",
+				"title": "Fruit title",
+				"desc": "Fruit description",
+				"children": [
+					{
+						"directory": "banana",
+						"title": "Banana title",
+						"desc": "Banana description"
+					},
+					{
+						"directory": "apple",
+						"title": "Apple title",
+						"desc": "Apple description"
+					},
+					{
+						"directory": "grape",
+						"title": "Grape title",
+						"desc": "Grape description"
+					}
+				]
+			},
+			{
+				"directory": "vegetable",
+				"title": "Vegetable title",
+				"desc": "Vegetable description",
+				"children": [
+					{
+						"directory": "carrot",
+						"title": "Carrot title",
+						"desc": "Carrot description"
+					},
+					{
+						"directory": "potato",
+						"title": "Potato title",
+						"desc": "Potato description"
+					},
+					{
+						"directory": "pumpkin",
+						"title": "Pumpkin title",
+						"desc": "Pumpkin description"
+					}
+				]
+			},
+			{
+				"directory": "drink",
+				"title": "Drink title",
+				"desc": "Drink description",
+				"children": [
+					{
+						"directory": "coke",
+						"title": "Coke title",
+						"desc": "Coke description"
+					},
+					{
+						"directory": "sprite",
+						"title": "Sprite title",
+						"desc": "Sprite description"
+					},
+					{
+						"directory": "redbull",
+						"title": "Redbull title",
+						"desc": "Redbull description"
+					}
+				]
+			}
+		]
+	};
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -42969,6 +43233,127 @@
 	}(React.Component);
 	
 	module.exports = HomePage;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var React = __webpack_require__(81);
+	
+	var ShowPage = function (_React$Component) {
+		_inherits(ShowPage, _React$Component);
+	
+		function ShowPage() {
+			_classCallCheck(this, ShowPage);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(ShowPage).apply(this, arguments));
+		}
+	
+		_createClass(ShowPage, [{
+			key: 'render',
+			value: function render() {
+	
+				return React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'h1',
+						null,
+						'Show page'
+					)
+				);
+			}
+		}]);
+	
+		return ShowPage;
+	}(React.Component);
+	
+	module.exports = ShowPage;
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var React = __webpack_require__(81);
+	
+	var EpisodePage = function (_React$Component) {
+		_inherits(EpisodePage, _React$Component);
+	
+		function EpisodePage() {
+			_classCallCheck(this, EpisodePage);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(EpisodePage).apply(this, arguments));
+		}
+	
+		_createClass(EpisodePage, [{
+			key: 'render',
+			value: function render() {
+	
+				var json = this.props.json;
+	
+				console.log('');
+				console.log('** -------COMPONENT------ **');
+				console.log(json);
+				console.log('** ------------- **');
+	
+				return React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'h1',
+						null,
+						'Episode page'
+					),
+					React.createElement(
+						'ul',
+						null,
+						React.createElement(
+							'li',
+							null,
+							'$',
+							json.directory
+						),
+						React.createElement(
+							'li',
+							null,
+							'$',
+							json.title
+						),
+						React.createElement(
+							'li',
+							null,
+							'$',
+							json.desc
+						)
+					)
+				);
+			}
+		}]);
+	
+		return EpisodePage;
+	}(React.Component);
+	
+	module.exports = EpisodePage;
 
 /***/ }
 /******/ ]);

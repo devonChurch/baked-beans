@@ -39,7 +39,7 @@ module.exports = [{
     devtool: 'source-map',
     entry: './entry.js',
     output: {
-        path: __dirname + '/dist/main',
+        path: __dirname + '/dist/static',
         filename: 'client.js'
     },
     plugins: [

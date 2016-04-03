@@ -30629,6 +30629,13 @@
 			key: 'render',
 			value: function render() {
 	
+				var json = this.props.json;
+	
+				console.log('');
+				console.log('** -------COMPONENT------ **');
+				console.log(json);
+				console.log('** ------------- **');
+	
 				return React.createElement(
 					'div',
 					null,
@@ -30636,6 +30643,28 @@
 						'h1',
 						null,
 						'Episode page'
+					),
+					React.createElement(
+						'ul',
+						null,
+						React.createElement(
+							'li',
+							null,
+							'$',
+							json.directory
+						),
+						React.createElement(
+							'li',
+							null,
+							'$',
+							json.title
+						),
+						React.createElement(
+							'li',
+							null,
+							'$',
+							json.desc
+						)
 					)
 				);
 			}
