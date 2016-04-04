@@ -7,9 +7,12 @@ const Immutable = require('immutable');
 const Redux = require('redux');
 const deepFreeze = require('deep-freeze');
 const mountNode = document.getElementById('app');
-const HomePage = require('./home-page');
-const ShowPage = require('./show-page');
-const EpisodePage = require('./episode-page');
+// const HomePage = require('./home-page');
+// const ShowPage = require('./show-page');
+// const EpisodePage = require('./episode-page');
+const render = require('./render');
+
+render();
 
 console.log('app.js');
 
