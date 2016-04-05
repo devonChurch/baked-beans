@@ -1,7 +1,7 @@
 'use strict';
 
 // const feed = require('./feed');
-const { Router, Route, IndexRoute, Redirect, Link, IndexLink, browserHistory } = require('react-router');
+const {Router, Route, IndexRoute, Redirect, Link, IndexLink, browserHistory} = require('react-router');
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Immutable = require('immutable');

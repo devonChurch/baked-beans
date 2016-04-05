@@ -1,69 +1,132 @@
 const express = require('express');
 const port = 8000;
+const {match, RouterContext} = require('react-router');
+const routes = require('./js/routes');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const fetchData = require('./js/page-data');
-const HomePage = require('./js/home-page');
-const ShowPage = require('./js/show-page');
-const EpisodePage = require('./js/episode-page');
+const scaffold = require('./js/scaffold');
+// const HomePage = require('./js/home-page');
+// const ShowPage = require('./js/show-page');
+// const EpisodePage = require('./js/episode-page');
 
 const app = express();
 
 app.use(express.static('static'));
 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
 
-    const json = fetchData(req.url);
+    match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
 
-    console.log('** ------------- **');
-    console.log(json);
-    console.log('** ------------- **');
+        console.log('  -------------------------------------  ');
+        console.log('routes', routes);
+        console.log('  -------------------------------------  ');
+        console.log('req.url', req.url);
+        console.log('  -------------------------------------  ');
+        console.log('error', error);
+        console.log('  -------------------------------------  ');
+        console.log('redirectLocation', redirectLocation);
+        console.log('  -------------------------------------  ');
+        console.log('renderProps', renderProps);
+        console.log('  -------------------------------------  ');
 
-    const views = {
-        '/' : () => ReactDOMServer.renderToString(<HomePage json={json} />),
-        '/fruit' : () => ReactDOMServer.renderToString(<ShowPage json={json} />),
-        '/fruit/banana' : () => ReactDOMServer.renderToString(<EpisodePage json={json} />)
-    };
+        if (error) {
 
-    const error = (
-        `<ul>
-            <li>There</li>
-            <li>Has</li>
-            <li>Been</li>
-            <li>An</li>
-            <li>Error</li>
-        </ul>`
-    );
+            res.status(500).send(error.message);
 
-    const title = null; // = 'this is a title';
-    const desc = null; // = 'this is a description';
+        } else if (redirectLocation) {
 
-    const content = views[req.url] ? views[req.url]() : error;
+            res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 
-    const html = (
-        `<!DOCTYPE html>
-        <html>
-            <head>
-                <meta charset="utf-8">
-                <meta http-equiv="x-ua-compatible" content="ie=edge">
-                <title>${title || 'This is a title'}</title>
-                <meta name="description" content="${desc || 'This is a description'}">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <link rel="apple-touch-icon" href="apple-touch-icon.png">
-                <link rel="stylesheet" href="/style.css">
-            </head>
-            <body>
-                <div id="app" class="app">${content}</div>
-                <script src="/client.js"></script>
-            </body>
-        </html>`
-    );
+        } else if (renderProps) {
 
-    res.send(html);
+            // You can also check renderProps.components or renderProps.routes for
+            // your "not found" component or route respectively, and send a 404 as
+            // below, if you're using a catch-all route.
+
+            const content = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
+            const html = scaffold(content);
+            // RouterContext
+
+            // res.status(200).send(renderToString(<RouterContext {...renderProps} />));
+            res.status(200).send(html);
+
+        } else {
+
+            res.status(404).send('Not found');
+
+        }
+    });
 
 });
 
 app.listen(port, () => console.log(`listening on port ${port}!`));
+
+
+
+
+
+
+
+// app.get('/*', (req, res) => {
+//
+//     const json = fetchData(req.url);
+//
+//     console.log('** ------------- **');
+//     console.log(json);
+//     console.log('** ------------- **');
+//
+//     const views = {
+//         '/' : () => ReactDOMServer.renderToString(<HomePage json={json} />),
+//         '/fruit' : () => ReactDOMServer.renderToString(<ShowPage json={json} />),
+//         '/fruit/banana' : () => ReactDOMServer.renderToString(<EpisodePage json={json} />)
+//     };
+//
+//     const error = (
+//         `<ul>
+//             <li>There</li>
+//             <li>Has</li>
+//             <li>Been</li>
+//             <li>An</li>
+//             <li>Error</li>
+//         </ul>`
+//     );
+//
+//     const title = null; // = 'this is a title';
+//     const desc = null; // = 'this is a description';
+//
+//     const content = views[req.url] ? views[req.url]() : error;
+//
+//     const html = (
+//         `<!DOCTYPE html>
+//         <html>
+//             <head>
+//                 <meta charset="utf-8">
+//                 <meta http-equiv="x-ua-compatible" content="ie=edge">
+//                 <title>${title || 'This is a title'}</title>
+//                 <meta name="description" content="${desc || 'This is a description'}">
+//                 <meta name="viewport" content="width=device-width, initial-scale=1">
+//                 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+//                 <link rel="stylesheet" href="/style.css">
+//             </head>
+//             <body>
+//                 <div id="app" class="app">${content}</div>
+//                 <script src="/client.js"></script>
+//             </body>
+//         </html>`
+//     );
+//
+//     res.send(html);
+//
+// });
+//
+// app.listen(port, () => console.log(`listening on port ${port}!`));
+
+
+
+
+
+
 
 // const jade = require('jade');
 // const path = require('path');
