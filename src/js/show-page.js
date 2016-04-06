@@ -27,8 +27,8 @@ class ShowPage extends React.Component {
 				<h1>Show page</h1>
 				<button onClick={this.logMe}>Click me</button>
 				<Link to="/">Home</Link>
-				<Link to="/fruit">Fruit</Link>
-				<Link to="/fruit/banana">Banana</Link>
+				<Link to="/vegetable">Vegetable</Link>
+				<Link to="/vegetable/potato">Potato</Link>
 			</div>
 		);
 

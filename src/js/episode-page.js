@@ -22,6 +22,9 @@ class EpisodePage extends React.Component {
 
 	render() {
 
+		console.log('this.props.params');
+		console.log(this.props.params);
+
 		return (
 			<div>
 				<h1>Episode page</h1>

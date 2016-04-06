@@ -48153,19 +48153,21 @@
 		Route,
 		{ path: '/' },
 		React.createElement(IndexRoute, { component: HomePage }),
-		React.createElement(
-			Route,
-			{ path: 'fruit' },
-			React.createElement(IndexRoute, { component: ShowPage, foo: 'bar' }),
-			React.createElement(
-				Route,
-				{ path: 'banana' },
-				React.createElement(IndexRoute, { component: EpisodePage, foo: 'bar' })
-			)
-		)
+		React.createElement(Route, { path: '/:food', component: ShowPage }),
+		React.createElement(Route, { path: '/:food/:variety', component: EpisodePage })
 	);
 	
 	module.exports = routes;
+	
+	// <Route path="/">
+	// 	<IndexRoute component={HomePage} />
+	// 	<Route path="fruit">
+	// 		<IndexRoute component={ShowPage} foo={'bar'}/>
+	// 		<Route path="banana">
+	// 			<IndexRoute component={EpisodePage} foo={'bar'}/>
+	// 		</Route>
+	// 	</Route>
+	// </Route>
 
 /***/ },
 /* 295 */
@@ -48241,13 +48243,13 @@
 					),
 					React.createElement(
 						Link,
-						{ to: '/fruit' },
-						'Fruit'
+						{ to: '/drink' },
+						'Drink'
 					),
 					React.createElement(
 						Link,
-						{ to: '/fruit/banana' },
-						'Banana'
+						{ to: '/drink/coke' },
+						'Coke'
 					)
 				);
 			}
@@ -48323,13 +48325,13 @@
 					),
 					React.createElement(
 						Link,
-						{ to: '/fruit' },
-						'Fruit'
+						{ to: '/vegetable' },
+						'Vegetable'
 					),
 					React.createElement(
 						Link,
-						{ to: '/fruit/banana' },
-						'Banana'
+						{ to: '/vegetable/potato' },
+						'Potato'
 					)
 				);
 			}
@@ -48384,6 +48386,9 @@
 		}, {
 			key: 'render',
 			value: function render() {
+	
+				console.log('this.props.params');
+				console.log(this.props.params);
 	
 				return React.createElement(
 					'div',

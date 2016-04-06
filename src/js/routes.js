@@ -8,13 +8,19 @@ const EpisodePage = require('./episode-page');
 const routes = (
 	<Route path="/">
 		<IndexRoute component={HomePage} />
-		<Route path="fruit">
-			<IndexRoute component={ShowPage} foo={'bar'}/>
-			<Route path="banana">
-				<IndexRoute component={EpisodePage} foo={'bar'}/>
-			</Route>
-		</Route>
+		<Route path="/:food" component={ShowPage} />
+		<Route path="/:food/:variety" component={EpisodePage} />
 	</Route>
 );
 
 module.exports = routes;
+
+// <Route path="/">
+// 	<IndexRoute component={HomePage} />
+// 	<Route path="fruit">
+// 		<IndexRoute component={ShowPage} foo={'bar'}/>
+// 		<Route path="banana">
+// 			<IndexRoute component={EpisodePage} foo={'bar'}/>
+// 		</Route>
+// 	</Route>
+// </Route>
