@@ -71,21 +71,28 @@
 	
 	    match({ routes: routes, location: req.url }, function (error, redirectLocation, renderProps) {
 	
-	        console.log('  -------------------------------------  ');
-	        console.log('routes', routes);
+	        // console.log('  -------------------------------------  ');
+	        // console.log('routes', routes);
 	        console.log('  -------------------------------------  ');
 	        console.log('req.url', req.url);
 	        console.log('  -------------------------------------  ');
-	        console.log('error', error);
-	        console.log('  -------------------------------------  ');
-	        console.log('redirectLocation', redirectLocation);
-	        console.log('  -------------------------------------  ');
-	        console.log('renderProps', renderProps);
-	        console.log('  -------------------------------------  ');
+	        // console.log('error', error);
+	        // console.log('  -------------------------------------  ');
+	        // console.log('redirectLocation', redirectLocation);
+	        // console.log('  -------------------------------------  ');
+	        // console.log('renderProps', renderProps);
+	        // console.log('  -------------------------------------  ');
 	
 	        if (error) {
 	
 	            res.status(500).send(error.message);
+	        } else if (req.url.indexOf('/api') === 0) {
+	
+	            console.log('Ping API');
+	            console.log(req.url);
+	            var json = fetchData(req.url);
+	
+	            res.status(200).send(json);
 	        } else if (redirectLocation) {
 	
 	            res.redirect(302, redirectLocation.pathname + redirectLocation.search);
@@ -48488,25 +48495,28 @@
 	    return distilled;
 	};
 	
+	var distillPath = function distillPath(path) {
+	
+	    var index = path.indexOf('?');
+	    path = index > 0 ? path = path.substr(index + 1) : path;
+	    path = path.slice(-1) === '/' ? path.substr(0, path.length - 1) : path;
+	
+	    return path;
+	};
+	
 	var fetch = function fetch(path) {
 	
-	    // const path = '/fruit';
+	    // Raw path example /fruit OR /fruit/banana OR /app?/fruit/banana
 	
-	    console.log('** ------------- **');
-	    console.log(path);
-	    console.log('** ------------- **');
+	    console.log('path BEFORE', path);
+	    path = distillPath(path);
+	    console.log('path AFTER', path);
 	
 	    if (path !== '/') {
 	
 	        console.log('NOT homepage');
 	
 	        var breadCrumb = path.slice(1).split('/');
-	
-	        // let json = distillFeed(breadCrumb, feed);
-	
-	        // console.log('  ** ------------ **');
-	        // console.log(json);
-	        // console.log(json.directory);
 	
 	        return distillFeed(breadCrumb, feed);
 	    } else {

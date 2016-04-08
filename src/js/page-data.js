@@ -45,25 +45,29 @@ const distillFeed = (breadCrumb, data) => {
 
 };
 
+const distillPath = (path) => {
+
+    const index = path.indexOf('?');
+    path = index > 0 ? path = path.substr(index + 1) : path;
+    path = path.slice(-1) === '/' ? path.substr(0, path.length - 1) : path;
+
+    return path;
+
+};
+
 const fetch = (path) => {
 
-    // const path = '/fruit';
+    // Raw path example /fruit OR /fruit/banana OR /app?/fruit/banana
 
-    console.log('** ------------- **');
-    console.log(path);
-    console.log('** ------------- **');
+    console.log('path BEFORE', path);
+    path = distillPath(path);
+    console.log('path AFTER', path);
 
     if (path !== '/') {
 
         console.log('NOT homepage');
 
         const breadCrumb = path.slice(1).split('/');
-
-        // let json = distillFeed(breadCrumb, feed);
-
-        // console.log('  ** ------------ **');
-        // console.log(json);
-        // console.log(json.directory);
 
         return distillFeed(breadCrumb, feed);
 

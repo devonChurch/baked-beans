@@ -18,21 +18,29 @@ app.get('*', (req, res) => {
 
     match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
 
-        console.log('  -------------------------------------  ');
-        console.log('routes', routes);
+        // console.log('  -------------------------------------  ');
+        // console.log('routes', routes);
         console.log('  -------------------------------------  ');
         console.log('req.url', req.url);
         console.log('  -------------------------------------  ');
-        console.log('error', error);
-        console.log('  -------------------------------------  ');
-        console.log('redirectLocation', redirectLocation);
-        console.log('  -------------------------------------  ');
-        console.log('renderProps', renderProps);
-        console.log('  -------------------------------------  ');
+        // console.log('error', error);
+        // console.log('  -------------------------------------  ');
+        // console.log('redirectLocation', redirectLocation);
+        // console.log('  -------------------------------------  ');
+        // console.log('renderProps', renderProps);
+        // console.log('  -------------------------------------  ');
 
         if (error) {
 
             res.status(500).send(error.message);
+
+        } else if (req.url.indexOf('/api') === 0) {
+
+            console.log('Ping API');
+            console.log(req.url);
+            const json = fetchData(req.url);
+
+            res.status(200).send(json);
 
         } else if (redirectLocation) {
 
