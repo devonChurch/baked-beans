@@ -65,6 +65,7 @@
 	
 	var app = express();
 	
+	// Express middleware.
 	app.use(express.static('static'));
 	
 	app.get('*', function (req, res) {
@@ -102,11 +103,24 @@
 	            // your "not found" component or route respectively, and send a 404 as
 	            // below, if you're using a catch-all route.
 	
-	            var content = ReactDOMServer.renderToString(React.createElement(RouterContext, renderProps));
-	            var html = scaffold(content);
+	            var _json = fetchData(req.url);
+	            var store = { foo: 1, bar: 2, baz: 3 };
+	            var content = ReactDOMServer.renderToString(
+	            /* <Provider store={store}> */
+	            React.createElement(RouterContext, renderProps)
+	            /* </Provider> */
+	            );
+	            var html = scaffold({ content: content, store: store });
 	            // RouterContext
 	
 	            // res.status(200).send(renderToString(<RouterContext {...renderProps} />));
+	
+	            // res.send("<!DOCTYPE html>"+
+	            //     ReactDOMServer.renderToString(
+	            //         Provider({store: store}, RouterContext(renderProps))
+	            //     )
+	            // );
+	
 	            res.status(200).send(html);
 	        } else {
 	
@@ -48613,13 +48627,18 @@
 
 	'use strict';
 	
-	var scaffold = function scaffold() {
-		var title = arguments.length <= 0 || arguments[0] === undefined ? 'This is a title' : arguments[0];
-		var desc = arguments.length <= 1 || arguments[1] === undefined ? 'This is a description' : arguments[1];
-		var content = arguments.length <= 2 || arguments[2] === undefined ? 'error' : arguments[2];
+	var scaffold = function scaffold(_ref) {
+		var _ref$title = _ref.title;
+		var title = _ref$title === undefined ? 'This is a title' : _ref$title;
+		var _ref$desc = _ref.desc;
+		var desc = _ref$desc === undefined ? 'This is a description' : _ref$desc;
+		var _ref$content = _ref.content;
+		var content = _ref$content === undefined ? 'error' : _ref$content;
+		var _ref$store = _ref.store;
+		var store = _ref$store === undefined ? null : _ref$store;
 	
 	
-		return '<!DOCTYPE html>\n\t    <html>\n\t        <head>\n\t            <meta charset="utf-8">\n\t            <meta http-equiv="x-ua-compatible" content="ie=edge">\n\t            <title>' + title + '</title>\n\t            <meta name="description" content="' + desc + '">\n\t            <meta name="viewport" content="width=device-width, initial-scale=1">\n\t            <link rel="apple-touch-icon" href="apple-touch-icon.png">\n\t            <link rel="stylesheet" href="/style.css">\n\t        </head>\n\t        <body>\n\t            <div id="app" class="app">' + content + '</div>\n\t            <script src="/client.js"></script>\n\t        </body>\n\t    </html>';
+		return '<!DOCTYPE html>\n\t    <html>\n\t        <head>\n\t            <meta charset="utf-8">\n\t            <meta http-equiv="x-ua-compatible" content="ie=edge">\n\t            <title>' + title + '</title>\n\t            <meta name="description" content="' + desc + '">\n\t            <meta name="viewport" content="width=device-width, initial-scale=1">\n\t            <link rel="apple-touch-icon" href="apple-touch-icon.png">\n\t            <link rel="stylesheet" href="/style.css">\n\t\t\t\t<script id="baseState">\n\t\t\t\t\twindow.__REDUX_STATE__ = ' + JSON.stringify(store) + ';\n\t\t\t\t</script>\n\t        </head>\n\t        <body>\n\t            <div id="app" class="app"></div>\n\t            <script src="/client.js"></script>\n\t        </body>\n\t    </html>';
 	};
 	
 	module.exports = scaffold;

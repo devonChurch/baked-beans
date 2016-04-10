@@ -12,6 +12,7 @@ const scaffold = require('./js/scaffold');
 
 const app = express();
 
+// Express middleware.
 app.use(express.static('static'));
 
 app.get('*', (req, res) => {
@@ -52,11 +53,26 @@ app.get('*', (req, res) => {
             // your "not found" component or route respectively, and send a 404 as
             // below, if you're using a catch-all route.
 
-            const content = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
-            const html = scaffold(content);
+            const json = fetchData(req.url);
+            const store = {foo: 1, bar: 2, baz: 3};
+            const content = ReactDOMServer.renderToString(
+                /* <Provider store={store}> */
+                    <RouterContext {...renderProps} />
+                /* </Provider> */
+            );
+            const html = scaffold({content, store});
             // RouterContext
 
             // res.status(200).send(renderToString(<RouterContext {...renderProps} />));
+
+
+
+            // res.send("<!DOCTYPE html>"+
+            //     ReactDOMServer.renderToString(
+            //         Provider({store: store}, RouterContext(renderProps))
+            //     )
+            // );
+
             res.status(200).send(html);
 
         } else {

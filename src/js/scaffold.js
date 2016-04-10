@@ -1,8 +1,9 @@
-const scaffold = (
+const scaffold = ({
 	title = 'This is a title',
 	desc = 'This is a description',
-	content = 'error'
-) => {
+	content = 'error',
+	store = null
+}) => {
 
 	return (
 		`<!DOCTYPE html>
@@ -15,9 +16,12 @@ const scaffold = (
 	            <meta name="viewport" content="width=device-width, initial-scale=1">
 	            <link rel="apple-touch-icon" href="apple-touch-icon.png">
 	            <link rel="stylesheet" href="/style.css">
+				<script id="baseState">
+					window.__REDUX_STATE__ = ${JSON.stringify(store)};
+				</script>
 	        </head>
 	        <body>
-	            <div id="app" class="app">${content}</div>
+	            <div id="app" class="app"></div>
 	            <script src="/client.js"></script>
 	        </body>
 	    </html>`

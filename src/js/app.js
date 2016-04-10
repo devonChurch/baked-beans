@@ -1,21 +1,16 @@
 'use strict';
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const {Router, Route, IndexRoute, Redirect, Link, IndexLink, browserHistory} = require('react-router');
-const routes = require('./routes');
-const Immutable = require('immutable');
-const Redux = require('redux');
-const deepFreeze = require('deep-freeze');
-const mountNode = document.getElementById('app');
-// const HomePage = require('./home-page');
-// const ShowPage = require('./show-page');
-// const EpisodePage = require('./episode-page');
+// const React = require('react');
+// const ReactDOM = require('react-dom');
+// const {Router, Route, IndexRoute, Redirect, Link, IndexLink, browserHistory} = require('react-router');
+// const routes = require('./routes');
+// const Immutable = require('immutable');
+// const Redux = require('redux');
+// const deepFreeze = require('deep-freeze');
+// const mountNode = document.getElementById('app');
 const render = require('./render');
 
 render();
-
-console.log('app.js');
 
 // Home
 //   -- Show
