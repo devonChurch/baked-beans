@@ -22,6 +22,11 @@ class HomePage extends React.Component {
 
 	render() {
 
+		console.log(this);
+		console.log('  ------------------------  ');
+		console.log(this.props);
+		const shows = ['one', 'two', 'three'];
+
 		return (
 			<div>
 				<h1>Home page</h1>
@@ -29,6 +34,15 @@ class HomePage extends React.Component {
 				<Link to="/">Home</Link>
 				<Link to="/drink">Drink</Link>
 				<Link to="/drink/coke">Coke</Link>
+				<ul>
+					{
+						shows.map((show, id) => {
+
+							return <li key={id}>{show}</li>;
+
+						})
+					}
+				</ul>
 			</div>
 		);
 

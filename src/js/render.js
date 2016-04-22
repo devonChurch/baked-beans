@@ -4,7 +4,6 @@ const {createStore} = require('redux');
 const {Provider} = require('react-redux');
 const {Router, Route, IndexRoute, Redirect, Link, IndexLink, browserHistory} = require('react-router');
 const routes = require('./routes');
-const HomePage = require('./home-page');
 
 console.log(Provider);
 
@@ -27,11 +26,11 @@ const fetchBaseState = () => {
 
 	console.log('fetchBaseState');
 
-	// const raw = window.__REDUX_STATE__;
-	//
-	// return raw ? JSON.parse(raw) : {};
+	const raw = window.__REDUX_STATE__;
+	console.log(raw);
+	return raw; // ? JSON.parse(raw) : {};
 
-	return {foo: 1, bar: 2, baz: 3};
+	// return {foo: 1, bar: 2, baz: 3};
 
 };
 

@@ -48173,13 +48173,18 @@
 	var routes = React.createElement(
 		Route,
 		{ path: '/' },
-		React.createElement(IndexRoute, { component: HomePage }),
-		React.createElement(Route, { path: '/:food', component: ShowPage }),
-		React.createElement(Route, { path: '/:food/:variety', component: EpisodePage })
+		React.createElement(Route, { path: '/:topic', component: ShowPage }),
+		React.createElement(Route, { path: '/:topic/:question', component: EpisodePage })
 	);
 	
 	module.exports = routes;
 	
+	// <Route path="/">
+	// 	<IndexRoute component={HomePage} />
+	// 	<Route path="/:food" component={ShowPage} />
+	// 	<Route path="/:food/:variety" component={EpisodePage} />
+	// </Route>
+
 	// <Route path="/">
 	// 	<IndexRoute component={HomePage} />
 	// 	<Route path="fruit">
@@ -48244,6 +48249,11 @@
 			key: 'render',
 			value: function render() {
 	
+				console.log(this);
+				console.log('  ------------------------  ');
+				console.log(this.props);
+				var shows = ['one', 'two', 'three'];
+	
 				return React.createElement(
 					'div',
 					null,
@@ -48271,6 +48281,18 @@
 						Link,
 						{ to: '/drink/coke' },
 						'Coke'
+					),
+					React.createElement(
+						'ul',
+						null,
+						shows.map(function (show, id) {
+	
+							return React.createElement(
+								'li',
+								{ key: id },
+								show
+							);
+						})
 					)
 				);
 			}

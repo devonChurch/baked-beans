@@ -137,7 +137,6 @@
 	var browserHistory = _require3.browserHistory;
 	
 	var routes = __webpack_require__(243);
-	var HomePage = __webpack_require__(244);
 	
 	console.log(Provider);
 	
@@ -155,11 +154,11 @@
 	
 		console.log('fetchBaseState');
 	
-		// const raw = window.__REDUX_STATE__;
-		//
-		// return raw ? JSON.parse(raw) : {};
+		var raw = window.__REDUX_STATE__;
+		console.log(raw);
+		return raw; // ? JSON.parse(raw) : {};
 	
-		return { foo: 1, bar: 2, baz: 3 };
+		// return {foo: 1, bar: 2, baz: 3};
 	};
 	
 	// Activates The Redux dev tools Chrome extension.
@@ -26310,13 +26309,18 @@
 	var routes = React.createElement(
 		Route,
 		{ path: '/' },
-		React.createElement(IndexRoute, { component: HomePage }),
-		React.createElement(Route, { path: '/:food', component: ShowPage }),
-		React.createElement(Route, { path: '/:food/:variety', component: EpisodePage })
+		React.createElement(Route, { path: '/:topic', component: ShowPage }),
+		React.createElement(Route, { path: '/:topic/:question', component: EpisodePage })
 	);
 	
 	module.exports = routes;
 	
+	// <Route path="/">
+	// 	<IndexRoute component={HomePage} />
+	// 	<Route path="/:food" component={ShowPage} />
+	// 	<Route path="/:food/:variety" component={EpisodePage} />
+	// </Route>
+
 	// <Route path="/">
 	// 	<IndexRoute component={HomePage} />
 	// 	<Route path="fruit">
@@ -26372,6 +26376,11 @@
 			key: 'render',
 			value: function render() {
 	
+				console.log(this);
+				console.log('  ------------------------  ');
+				console.log(this.props);
+				var shows = ['one', 'two', 'three'];
+	
 				return React.createElement(
 					'div',
 					null,
@@ -26399,6 +26408,18 @@
 						Link,
 						{ to: '/drink/coke' },
 						'Coke'
+					),
+					React.createElement(
+						'ul',
+						null,
+						shows.map(function (show, id) {
+	
+							return React.createElement(
+								'li',
+								{ key: id },
+								show
+							);
+						})
 					)
 				);
 			}

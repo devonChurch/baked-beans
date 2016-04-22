@@ -7,13 +7,18 @@ const EpisodePage = require('./episode-page');
 
 const routes = (
 	<Route path="/">
-		<IndexRoute component={HomePage} />
-		<Route path="/:food" component={ShowPage} />
-		<Route path="/:food/:variety" component={EpisodePage} />
+		<Route path="/:topic" component={ShowPage} />
+		<Route path="/:topic/:question" component={EpisodePage} />
 	</Route>
 );
 
 module.exports = routes;
+
+// <Route path="/">
+// 	<IndexRoute component={HomePage} />
+// 	<Route path="/:food" component={ShowPage} />
+// 	<Route path="/:food/:variety" component={EpisodePage} />
+// </Route>
 
 // <Route path="/">
 // 	<IndexRoute component={HomePage} />
